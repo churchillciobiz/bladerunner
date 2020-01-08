@@ -8,10 +8,11 @@
     "chai-http": "^2.0.1",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
-    "mocha": "^2.4.5",
-    "mongodb": "^2.1.16",
-    "morgan": "^1.7.0",
-    "object-assign":"4.1.0"
+    "express-fileupload": "^1.1.6",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.17.1",
+    "node-image-resizer": "^1.0.0",
+    "object-assign": "4.1.0"
   },
   "engine": {
     "node": "*",
