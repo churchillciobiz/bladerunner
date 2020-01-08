@@ -21,7 +21,7 @@ app.use(morgan('combined'))
 
 /* mysql connection */
 //Create db connection
-const db = mysql.createConnection({
+const dbase = mysql.createConnection({
   host     : process.env.OPENSHIFT_MYSQL_DB_HOST,
   user     : process.env.OPENSHIFT_MYSQL_DB_USERNAME,
   password : process.env.OPENSHIFT_MYSQL_DB_PASSWORD,
@@ -30,7 +30,7 @@ const db = mysql.createConnection({
 });
 
 //Connect
-db.connect((err) => {
+dbase.connect((err) => {
 	if(err){
 		console.log(err);
 	}else{
