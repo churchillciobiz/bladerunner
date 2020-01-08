@@ -1,7 +1,12 @@
 //  OpenShift sample Node application
 var express = require('express'),
-    app     = express(),
-    morgan  = require('morgan');
+var app     = express(),
+var morgan  = require('morgan');
+const mysql = require('mysql');
+var jwt = require('jsonwebtoken');
+const upload = require('express-fileupload');
+const resizer = require('node-image-resizer');
+const path = require('path');
     
 Object.assign=require('object-assign')
 app.use(function(req, res, next) {
@@ -13,6 +18,26 @@ app.use(function(req, res, next) {
 });
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
+
+/* mysql connection */
+//Create db connection
+const db = mysql.createConnection({
+  host     : process.env.OPENSHIFT_MYSQL_DB_HOST,
+  user     : process.env.OPENSHIFT_MYSQL_DB_USERNAME,
+  password : process.env.OPENSHIFT_MYSQL_DB_PASSWORD,
+  port     : process.env.OPENSHIFT_MYSQL_DB_PORT,
+  database : "mobiletdb"
+});
+
+//Connect
+db.connect((err) => {
+	if(err){
+		console.log(err);
+	}else{
+	console.log("Mysql connected ...");
+	}
+});
+/* ///////////////// */
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
