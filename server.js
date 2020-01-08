@@ -4,7 +4,13 @@ var express = require('express'),
     morgan  = require('morgan');
     
 Object.assign=require('object-assign')
-
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Multipart/form-data");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Authorization");
+  next();
+});
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
 
