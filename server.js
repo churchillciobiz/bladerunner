@@ -1,6 +1,6 @@
 //  OpenShift sample Node application
-var express = require('express'),
-var app     = express(),
+var express = require('express');
+var app     = express();
 var morgan  = require('morgan');
 const mysql = require('mysql');
 var jwt = require('jsonwebtoken');
