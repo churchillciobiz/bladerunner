@@ -1,5 +1,5 @@
 {
-  "name": "nodejs-ex",
+  "name": "bladerunner",
   "version": "0.0.1",
   "description": "Node.js sample app for OpenShift 3",
   "main": "server.js",
@@ -10,6 +10,8 @@
     "express": "^4.13.4",
     "express-fileupload": "^1.1.6",
     "jsonwebtoken": "^8.5.1",
+    "mocha": "^2.4.5",
+    "morgan": "^1.7.0",
     "mysql": "^2.17.1",
     "node-image-resizer": "^1.0.0",
     "object-assign": "4.1.0"
@@ -24,12 +26,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/sclorg/nodejs-ex.git"
+    "url": "https://github.com/churchillciobiz/bladerunner.git"
   },
-  "author": "Steve Speicher <sspeiche@gmail.com>",
+  "author": "Churchill Omondi <sspeiche@gmail.com>",
   "license": "CC-BY-1.0",
   "bugs": {
     "url": "http://github.com/sclorg/nodejs-ex/issues"
   },
-  "homepage": "http://github.com/sclorg/nodejs-ex"
+  "homepage": "https://github.com/churchillciobiz/bladerunner.git"
 }
