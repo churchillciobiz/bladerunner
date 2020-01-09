@@ -133,12 +133,14 @@ app.post('/postthis', function(req, res) {
 })
 app.post('/loginmobiletapp', (request, response) => {
   console.log(request.body.telephone, request.body.passcode);
-	let sql  = `SELECT * FROM mobilet_members WHERE telephone='${request.body.telephone}' AND pass_code='${request.body.passcode}'`;
+  //let sql  = `SELECT * FROM mobilet_members WHERE telephone='${request.body.telephone}' AND pass_code='${request.body.passcode}'`;
+  let sql  = `SELECT * FROM mobilet_members`;
 	let query = db.query(sql, (err, result)=>{
 		if(err) throw err;
 		if(result && result.length) {
 			jwt.sign({member: result}, "secretKey", (error, token)=>{
-          response.json({"message": "user in db", "token":token});
+          //response.json({"message": "user in db", "token":token});
+          response.json({"message": "user in db", "token":result})
         });
 		}else {
 			response.send({message: "wrong passcode"});
