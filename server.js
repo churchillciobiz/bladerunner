@@ -131,7 +131,19 @@ app.get('/getthis', function(req, res) {
 app.post('/postthis', function(req, res) {
   res.json({"message":"got this response"});
 })
-
+app.post('/loginmobiletapp', (request, response) => {
+	let sql  = `SELECT * FROM mobilet_members WHERE telephone='${request.body.telephone}' AND pass_code='${request.body.passcode}'`;
+	let query = db.query(sql, (err, result)=>{
+		if(err) throw err;
+		if(result && result.length) {
+			jwt.sign({member: result}, "secretKey", (error, token)=>{
+          response.json({"message": "user in db", "token":token});
+        });
+		}else {
+			response.send({message: "wrong passcode"});
+		}
+	});
+});
 app.get('/pagecount', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
