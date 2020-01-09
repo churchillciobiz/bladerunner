@@ -21,22 +21,35 @@ app.use(morgan('combined'))
 
 /* mysql connection */
 //Create db connection
-const dbase = mysql.createConnection({
+var db_config = {
   host     : process.env.OPENSHIFT_MYSQL_DB_HOST,
   user     : process.env.OPENSHIFT_MYSQL_DB_USERNAME,
   password : process.env.OPENSHIFT_MYSQL_DB_PASSWORD,
   port     : process.env.OPENSHIFT_MYSQL_DB_PORT || 8080,
   database : "mobiletdb"
-});
+};
+function handleDisconnect(){
+  const dbase = mysql.createConnection(db_config);
+  //Connect
+  dbase.connect((err) => {
+    if(err){
+      console.log(err+"errot when connecting:<>>>");
+      setTimeout(handleDisconnect, 2000);
+    }
+  });
+  dbase.on("error", function(err){
+    console.log("db eror", err);
+    if(err.code === "PROTOCOL_CONNECTION_LOST"){
+      handleDisconnect();
+    }else{
+      throw err;
+    }
+    
+  })
+}
 
-//Connect
-dbase.connect((err) => {
-	if(err){
-		console.log(err);
-	}else{
-	console.log("Mysql connected ...");
-	}
-});
+handleDisconnect();
+
 /* ///////////////// */
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
