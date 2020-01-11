@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken');
 const upload = require('express-fileupload');
 const resizer = require('node-image-resizer');
 const path = require('path');
+var bodyParser = require('body-parser')
     
 Object.assign=require('object-assign')
 app.use(function(req, res, next) {
@@ -16,39 +17,32 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Authorization");
   next();
 });
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+ 
+// parse application/json
+app.use(bodyParser.json())
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
 
 /* mysql connection */
 //Create db connection
-var db_config = {
-  host     : process.env.OPENSHIFT_MYSQL_DB_HOST,
+
+const db = mysql.createPool({
+	host     : process.env.OPENSHIFT_MYSQL_DB_HOST,
   user     : process.env.OPENSHIFT_MYSQL_DB_USERNAME,
   password : process.env.OPENSHIFT_MYSQL_DB_PASSWORD,
   port     : process.env.OPENSHIFT_MYSQL_DB_PORT || 8080,
   database : "mobiletdb"
-};
-function handleDisconnect(){
-  const dbase = mysql.createConnection(db_config);
-  //Connect
-  dbase.connect((err) => {
-    if(err){
-      console.log(err+"errot when connecting:<>>>");
-      setTimeout(handleDisconnect, 2000);
-    }
-  });
-  dbase.on("error", function(err){
-    console.log("db eror", err);
-    if(err.code === "PROTOCOL_CONNECTION_LOST"){
-      handleDisconnect();
-    }else{
-      throw err;
-    }
-    
-  })
-}
+});
 
-handleDisconnect();
+//Connect
+setInterval(() => {
+  pool.query('SELECT 1', (err, rows) => {
+      if (err) throw err;
+  });   
+}, 1000);
 
 /* ///////////////// */
 
