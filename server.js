@@ -38,11 +38,7 @@ const pool = mysql.createPool({
 });
 
 //Connect
-setInterval(() => {
-  pool.query('SELECT 1', (err, rows) => {
-      if (err) throw err;
-  });   
-}, 1000);
+pool.query('select 1 + 1', (err, rows) => { /* */ });
 
 /* ///////////////// */
 
