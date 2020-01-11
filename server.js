@@ -8,7 +8,12 @@ const upload = require('express-fileupload');
 const resizer = require('node-image-resizer');
 const path = require('path');
 var bodyParser = require('body-parser')
-    
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+ 
+// parse application/json
+app.use(bodyParser.json())
 Object.assign=require('object-assign')
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -18,11 +23,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
- 
-// parse application/json
-app.use(bodyParser.json())
+
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
 
@@ -164,7 +165,20 @@ app.get('/pagecount', function (req, res) {
     res.send('{ pageCount: -1 }');
   }
 });
-
+function verifyToken(req, resp, next){
+  const bearerHeader = req.headers["authorization"];
+  //check if bearer is undefined
+  if(typeof bearerHeader !== "undefined"){
+    //split at the space
+    const bearer = bearerHeader.split(" ");
+    const bearerToken = bearer[1];
+    req.token = bearerToken;
+    next();
+  }else{
+    //forbidden
+    resp.sendStatus(403);
+  }
+}
 // error handling
 app.use(function(err, req, res, next){
   console.error(err.stack);
