@@ -133,6 +133,7 @@ app.get('/getthis', function(req, res) {
   res.json({"message":"got this response"});
 })
 app.post('/postthis', function(req, res) {
+  console.log(request.body.telephone, request.body.passcode);
   res.json({"message":"got this response"});
 })
 app.post('/loginmobiletapp', (request, response) => {
