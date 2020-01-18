@@ -138,15 +138,14 @@ app.post('/postthis', function(request, response) {
   response.json({"message":"got this response"});
 })
 app.post('/loginmobiletapp', (request, response) => {
-  // 504 error
   let sql  = `SELECT * FROM mobilet_members`;
 	let query = pool.query(sql, (err, result)=>{
     if(err) throw err;
-    if(result && result.length) {
+    /*if(result && result.length) {*/
       response.json({"message":"your members","data":result});
-    }else {
+    /*}else {
       response.json({"message":"no members"});
-    }
+    }*/
   });
 });
 
