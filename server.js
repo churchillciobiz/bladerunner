@@ -36,7 +36,7 @@ const pool = mysql.createPool({
   password : process.env.OPENSHIFT_MYSQL_DB_PASSWORD,
   port     : process.env.OPENSHIFT_MYSQL_DB_PORT || 8080,
   ip       : process.env.IP   || process.env.OPENSHIFT_MYSQL_DB_IP || '0.0.0.0',
-  database : "mobiletdb2"
+  database : "sampledb"
 });
 
 //Connect
