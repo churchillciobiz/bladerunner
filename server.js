@@ -35,6 +35,7 @@ const pool = mysql.createPool({
   user     : process.env.OPENSHIFT_MYSQL_DB_USERNAME,
   password : process.env.OPENSHIFT_MYSQL_DB_PASSWORD,
   port     : process.env.OPENSHIFT_MYSQL_DB_PORT || 8080,
+  ip       : process.env.IP   || process.env.OPENSHIFT_MYSQL_DB_IP || '0.0.0.0',
   database : "mobiletdb2"
 });
 
@@ -132,37 +133,23 @@ app.get('/', function (req, res) {
 app.get('/getthis', function(req, res) {
   res.json({"message":"got this response"});
 })
-app.post('/postthis', function(req, res) {
-  console.log(req.body.telephone, req.body.passcode);
-  res.json({"message":"got this response"});
+app.post('/postthis', function(request, response) {
+  //response it returned to client
+  response.json({"message":"got this response"});
 })
 app.post('/loginmobiletapp', (request, response) => {
-  console.log(request.body.telephone, request.body.passcode);
-  //let sql  = `SELECT * FROM mobilet_members WHERE telephone='${request.body.telephone}' AND pass_code='${request.body.passcode}'`;
+  // 504 error
   let sql  = `SELECT * FROM mobilet_members`;
 	let query = pool.query(sql, (err, result)=>{
     if(err) throw err;
     if(result && result.length) {
-      response.json({"message":"your stuff","data":result});
+      response.json({"message":"your members","data":result});
     }else {
-      response.json({"message":"no notes"});
+      response.json({"message":"no members"});
     }
   });
 });
-app.get('/pagecount', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  // initialized.
-  if (!db) {
-    initDb(function(err){});
-  }
-  if (db) {
-    db.collection('counts').count(function(err, count ){
-      res.send('{ pageCount: ' + count + '}');
-    });
-  } else {
-    res.send('{ pageCount: -1 }');
-  }
-});
+
 function verifyToken(req, resp, next){
   const bearerHeader = req.headers["authorization"];
   //check if bearer is undefined
@@ -181,10 +168,6 @@ function verifyToken(req, resp, next){
 app.use(function(err, req, res, next){
   console.error(err.stack);
   res.status(500).send('Something bad happened!');
-});
-
-initDb(function(err){
-  console.log('Error connecting to Mongo. Message:\n'+err);
 });
 
 app.listen(port, ip);
